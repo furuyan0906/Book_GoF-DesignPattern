@@ -1,0 +1,52 @@
+@startuml
+title CompositeDesignPattern
+
+package User
+{
+    class client
+}
+
+package CompositeDesignPattern
+{
+    abstract Entry
+    {
+        + ~Entry()
+        + virtual std::string getName(void) = 0
+        + virtual int getSize(void) = 0
+        + virtual void printList(std::string prefix) = 0
+        + virtual Entry* add(Entry *entry)
+        + std::string toString(void)
+    }
+    class Directory
+    {
+        - std::string m_name
+        - std::vector<Entry *> m_directory
+        + std::string getName(void)
+        + int getSize(void)
+        + void printList(std::string prefix)
+        + Entry* add(Entry *entry)
+        + void printList(void)
+    }
+    class File
+    {
+        - std::string m_name
+        - int m_name
+        + std::string getName(void)
+        + int getSize(void)
+        + void printList(std::string prefix)
+    }
+}
+
+client --> Directory : create
+client --> File : create
+
+Entry <|-- Directory
+Entry <|-- File
+note right on link #99FFFF
+Directory/Fileクラスのオブジェクトを
+Entry(=基底クラス)として統一的に扱う
+ことがポイント
+→ <font color=red><b>再帰的な構造を作ることができる
+end note
+
+@enduml
