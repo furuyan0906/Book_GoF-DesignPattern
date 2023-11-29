@@ -1,0 +1,60 @@
+@startuml{template.png}
+title Template Design Pattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package TemplateDesignPattern
+{
+    package Abstract
+    {
+        class AbstractDisplay
+        {
+            + ~AbstractDisplay()
+            + void display()
+            + void open() = 0
+            + void print() = 0
+            + void close() = 0
+        }
+        note top of AbstractDisplay #99FFFF
+        <font color=blue><b>display()は「表示する」を表す抽象的なメソッド
+        <font color=blue><b>open, print, closeを使用してロジックを共通
+        end note
+    }
+
+    package Concrete
+    {
+        class CharDisplay
+        {
+            - char m_ch
+            + void CharDisplay(char)
+            + void open()
+            + void print()
+            + void close()
+        }
+        class StringDisplay
+        {
+            - std::string m_str
+            - void println()
+            + void StringDisplay(std::string)
+            + void open()
+            + void print()
+            + void close()
+        }
+    }
+}
+
+AbstractDisplay <|.. CharDisplay : 実現する
+AbstractDisplay <|.. StringDisplay : 実現する
+
+user -> CharDisplay : create
+user -> StringDisplay : create
+user -> AbstractDisplay : <b>uses
+note top on link #FFAAFF
+userは必要なオブジェクトを作成してスーパークラスにアドレスを渡し、
+共通化されたロジックを使えば良い
+end note
+
+@enduml
