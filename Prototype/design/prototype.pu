@@ -1,0 +1,53 @@
+@startuml
+title PrototypeDesignPattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package PrototypeDesignPattern
+{
+    class Manager
+    {
+        - HashMap showcase
+        + void register(std::string name, Product proto)
+        + Product* create(std::string protoname)
+    }
+
+    abstract class Product
+    {
+        + void use(std::string str) = 0
+        + Product* createClone(void) = 0
+    }
+    class MessageBox
+    {
+        - char m_decochar
+        + MessageBox(char decochar)
+        + void use(std::string str)
+        + Product* createClone(void)
+    }
+    class UnderlinePen
+    {
+        - char ulchar
+        + UnderlinePen(char ulchar)
+        + void use(std::string str)
+        + void Product* createClone(void)
+    }
+}
+
+user --> Manager : creates
+user ..> Product : キャスト用に使う
+user --> MessageBox : creates
+user --> UnderlinePen : creates
+
+Product <|-- MessageBox
+Product <|-- UnderlinePen
+
+Manager --> Product : uses
+note right on link #99FFFF
+<font color=blue><b> 文字列とオブジェクトのアドレスを
+<font color=blue><b> 対応づけて登録
+end note
+
+@enduml
