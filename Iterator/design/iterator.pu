@@ -1,0 +1,89 @@
+@startuml{iterator.png}
+title Iterator Design Pattern 
+
+package User#FFAAFF
+{
+    class user
+}
+
+package IteratorDesignPattern
+{
+    package Abstract
+    {
+        abstract class Iterator
+        {
+            + void hasNext() = 0
+            + void is() = 0
+            + void next() = 0
+        }
+        note right of Iterator #99FFFF
+        <font color=blue><b>「次の要素」を示す
+        <font color=blue><b>抽象的なクラス
+        end note
+        abstract class Aggregate
+        {
+            + Iterator<T> *iterator()
+        }
+        note left of Aggregate #99FFFF
+        <font color=blue><b>「要素の集合」を示す
+        <font color=blue><b>抽象的なクラス
+        end note
+    }
+
+    package Concrete
+    {
+        package Imprementation
+        {
+            class BookshelfIterator
+            {
+                - Bookshelf m_bookshelf
+                - int m_index
+                + void hasNext()
+                + void is()
+                + void next()
+            }
+            class Bookshelf
+            {
+                + Bookshelf(int)
+                + ~Bookshelf()
+                + Book getBookAt(int)
+                + void appendBook(Book)
+                + int getShelfLength()
+                + Iterator<Book> *iterator()
+            }
+        }
+        class Book
+        {
+            - std::string m_name
+            + Book(std::string)
+            + ~Book()
+            + std::string getName()
+        }
+    }
+}
+
+
+' 継承
+Iterator <|.. BookshelfIterator
+note right on link
+BookshelfIteratorで
+Iteratorの実装を実現
+end note
+Aggregate <|.. Bookshelf
+note left on link
+BookshlefでAggregateの
+具体的な実装を実現
+end note
+Aggregate -> Iterator
+Bookshelf o- BookshelfIterator
+Bookshelf o-- Book
+
+user -> Book : <font size=12><b>Create
+user -> Bookshelf : <font size=12><b>Create
+note right on link #FFAAFF
+<b>iterator()を介して
+<b>BookshelfIteratorの情報を
+<b>取得する
+end note
+
+@enduml
