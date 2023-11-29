@@ -1,0 +1,106 @@
+@startuml
+title AbstractFactoryDesignPattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package AbstractFactoryDesignPattern
+{
+    package Factory
+    {
+        abstract class Item
+        {
+            # std::string m_caption
+            + Item(std::string caption)
+            + std::string makeHTML(void) = 0
+        }
+        abstract class Link
+        {
+            # std::string m_url
+            + Link(std::string caption, std::string url)
+            + std::string makeHTML(void) = 0
+        }
+        abstract class Tray
+        {
+            # std::vector m_tray
+            + Tray(std::string caption)
+            + void add(Item *item)
+            + std::string makeHTML(void) = 0
+        }
+        abstract class Page
+        {
+            # std::string m_title
+            # std::string m_author
+            # std::vector m_content;
+            + Page(std::string title, std::string author)
+            + void add(Item *item)
+            + void output(void)
+            + std::string makeHTML(void) = 0
+        }
+        abstract class Factory
+        {
+            + static Factory* getFactory(std::string classname)
+            + Link* createLink(std::string caption, std::string url) = 0
+            + Tray* createTray(std::string caption) = 0
+            + Page* createPage(std::string title, std::string author) = 0
+        }
+        class FactoryUtil
+        {
+            + Factory* getInstance(std::string classname)
+        }
+    }
+    package ListFactory
+    {
+        class ListLink
+        {
+            + ListLink(std::string caption, std::string url)
+            + std::string makeHTML(void)
+        }
+        class ListTray
+        {
+            + ListTray(std::string caption)
+            + std::string makeHTML(void)
+        }
+        class ListPage
+        {
+            ListPage(std::string title, std::string author)
+            + std::string makeHTML(void)
+        }
+        class ListFactory
+        {
+            Link* createLink(std::string caption, std::string url)            
+            Tray* createTray(std::string caption)
+            Page* createPage(std::string caption, std::string author)
+        }
+    }
+}
+
+Item <--o Tray
+Item <|-- Link
+Item <|-- Tray
+
+Link <-- Factory : creates
+Tray <-- Factory : creates
+Page <-- Factory : creates
+
+Link <|-- ListLink
+Tray <|-- ListTray
+Page <|-- ListPage
+
+ListLink <-- ListFactory : creates
+ListTray <-- ListFactory : creates
+ListPage <-- ListFactory : creates
+
+Factory <|-- ListFactory
+
+Factory ---> FactoryUtil : call
+FactoryUtil --|> ListFactory
+
+user ---> Factory
+user ---> Link
+user ---> Tray
+user ---> Page
+
+@enduml
