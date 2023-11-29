@@ -1,0 +1,10 @@
+# ----- [TAG] -----
+GPATH
+GRTAGS
+GTAGS
+
+# ----- [Cmake] -----
+bin/
+
+# ----- [Others] -----
+Greeting.html

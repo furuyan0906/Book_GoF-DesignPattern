@@ -1,0 +1,57 @@
+@startuml
+title BuilderDesignPattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package BuilderDesignPattern
+{
+    abstract class Builder
+    {
+        + makeTitle(std::string) = 0
+        + makeString(std::string) = 0
+        + makeItems(std::vector<std::string>) = 0
+        + void close(void) = 0
+    }
+    class Director
+    {
+        - Builder *m_builder
+        + void constructor(void)
+    }
+    class TextBuilder
+    {
+        - std::vector<std::string> m_buffer
+        + makeTitle(std::string)
+        + makeString(std::string)
+        + makeItems(std::vector<std::string>)
+        + void close(void)
+        + std::string getResult(void)
+    }
+    class HTMLBuilder
+    {
+        - std::string m_filename
+        - std::ofstream m_writer
+        + makeTitle(std::string)
+        + makeString(std::string)
+        + makeItems(std::vector<std::string>)
+        + void close(void)
+        + std::string getResult(void)
+    }
+}
+
+user --> Director : uses
+user --> TextBuilder : uses
+user --> HTMLBuilder : uses
+
+Director *-- Builder
+note left on link #99FFFF
+<font color=blue><b>Builderクラスがないと
+<font color=blue><b>Directorクラスは成り立たない
+end note
+
+Builder <|-- TextBuilder
+Builder <|-- HTMLBuilder
+
+@enduml
