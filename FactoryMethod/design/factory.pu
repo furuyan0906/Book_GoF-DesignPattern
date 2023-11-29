@@ -1,0 +1,61 @@
+@startuml{factory.png}
+title Factory Design Pattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package FactoryDesignPattern
+{
+    package Framework
+    {
+        package Creator
+        {
+        class Factory
+        {
+                + ~Factory()
+                + Product *create(std::string)
+                # Product *createProduct(std::string) = 0
+                # void registerProduct(Product *) = 0
+            }
+        }
+            class Product
+            {
+                + void use() = 0
+            }
+    }
+    package Concrete
+    {
+        class IDCardFactory
+        {
+            - std::vector<Product *> m_owners
+            + IDCardFactory()
+            + Product *create(void)
+            # Product *createProduct(std::string)
+            # void registerProduct(Product *)
+        }
+        class IDCard
+        {
+            - std::string m_owner
+            + void use()
+            + std::string getOwner()
+        }
+    }
+}
+
+Factory <|-- IDCardFactory
+Factory -> Product 
+
+Product <|-- IDCard
+
+user -> IDCardFactory : <b>creates
+note left on link #99FFFF
+<font color=blue><b>userはIDCardFactoryクラスを作成し、
+<font color=blue><b>createメソッドを使ってIDCardをcreateする
+end note
+user -> IDCard : <b>creates
+user -> Factory : <b>uses
+user -> Product : <b>uses
+
+@enduml
