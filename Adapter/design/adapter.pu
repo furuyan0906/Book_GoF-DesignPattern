@@ -1,0 +1,61 @@
+@startuml{adapter.png}
+title Adapter Design Pattern
+
+package User #FFAAFF
+{
+    class user
+}
+
+package AdapterDesignPattern
+{
+    package Target
+    {
+        abstract class Print
+        {
+            ~Print(){}
+            + void printWeak() = 0
+            + void printStrong() = 0
+        }
+        note left of Print #99FFFF
+        <font color=blue><b>「プリント機能」を表す抽象的なクラス
+        <font color=blue><b>userはBarnerクラスの出力を気にしなくても良い
+        end note
+    }
+    package Adapter
+    {
+        class PrintBarner
+        {
+            - Barner m_barner
+            + Barner(std::string)
+            + void printWeak()
+            + void printStrong()
+        }
+    }
+    package Adaptee
+    {
+        class Barner
+        {
+            - std::string m_str
+            + void showWithParen()
+            + void showWithAster()
+        }
+    }
+}
+
+Print <|.. PrintBarner
+PrintBarner -> Barner
+note bottom on link #99FFFF
+<font color=blue><b>この例では委譲（メンバにBarnerクラスのオブジェクトを持つ）を
+<font color=blue><b>使っているが、
+<font color=blue><b>PrintBarnerクラスがBarnerクラスを継承しても良い
+end note
+
+user -> PrintBarner : <b>Create
+user -> Print : <b>Uses
+note top on link #FFAAFF
+<b>userはPrintBarnerクラスのオブジェクトを作成し、
+<b>アドレスをPrintクラスに渡す
+<b>実際にBarnerクラスがどういう出力を出しているか気にしなくても良い
+end note
+
+@enduml

@@ -1,0 +1,7 @@
+# ----- [TAG] -----
+GPATH
+GRTAGS
+GTAGS
+
+# ----- [Cmake] -----
+/bin/
