@@ -1,0 +1,31 @@
+@startuml{singleton.pu}
+title Singleton Design Pattern
+
+package User #FFAAFF
+{
+    class user1
+    class user2
+    class userN
+}
+
+package SingletonDesignPattern
+{
+    class Singleton
+    {
+        - Singleton()
+        - Singleton(const Singleton &)
+        - ~Singleton()
+        - Singleton& operator=(const Singleton &)
+        + static const Singleton& getInstance()
+    }
+}
+
+Singleton <-- user1
+Singleton <-- user2
+Singleton <-- userN
+
+Singleton --> user1 : 同一のインスタンスの参照を返す
+Singleton --> user2 : 同一のインスタンスの参照を返す
+Singleton --> userN : 同一のインスタンスの参照を返す
+
+@enduml
