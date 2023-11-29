@@ -1,0 +1,54 @@
+@startuml
+title BridgeDesignPattern
+
+package Implementation
+{
+    class DisplayImpl
+    {
+        + void rawOpen(void) = 0
+        + void rawPrint(void) = 0
+        + void rawClose(void) = 0
+    }
+    class StringDisplayImpl
+    {
+        + void rawOpen(void)
+        + void rawPrint(void)
+        + void rawClose(void)
+    }
+}
+
+package Function
+{
+    class Display
+    {
+        - DisplayImpl *m_impl
+        + void open(void)
+        + void print(void)
+        + void close(void)
+        + void display(void) final
+    }
+    note left of Display #99FFFF
+    m_implをメンバ変数に持つ事で、
+    DisplayImplと移譲(弱い結びつき)の関係にある
+    機能は変えずに実装(実際の動作)を変えたい場合は
+    DisplayImplのサブクラスを変更すれば良い
+    (渡すポインタを変えれば良い)
+    end note
+    class CountDisplay
+    {
+        CountDisplay(DisplayImpl)
+        + void multiDisplay(int times)
+    }
+}
+
+
+DisplayImpl <|-- StringDisplayImpl
+Display <|-- CountDisplay
+Display o- DisplayImpl
+note top on link #FFAAFF
+機能と実装を分けていて、
+移譲で繋がっているため、
+機能と実装を別々に拡張できる
+end note
+
+@enduml
